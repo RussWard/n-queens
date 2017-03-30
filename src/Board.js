@@ -25,6 +25,7 @@
     },
 
     togglePiece: function(rowIndex, colIndex) {
+      debugger;
       this.get(rowIndex)[colIndex] = + !this.get(rowIndex)[colIndex];
       this.trigger('change');
     },
@@ -180,7 +181,6 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      console.log(minorDiagonalColumnIndexAtFirstRow);
       var rows = this.rows();
       var occurences = 0;
       var startIndex = minorDiagonalColumnIndexAtFirstRow;

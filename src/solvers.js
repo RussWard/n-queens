@@ -16,40 +16,24 @@
 
 
 window.findNRooksSolution = function(n) {
+  debugger;
   var solution = undefined;
+  var board = new Board({n:n});
 
-  var obj = {};
-  obj.n = n;
-  obj.board = new Board({n:n});
-  obj.board.togglePiece(0,0);
-  obj.toggles = [[0,0]];
-  obj.children = [];
+  var toggleToSolution = function(row, r) {
+    if (r < n) {
+      for (var i = 0; i < n; i++) {
+        board.togglePiece(r, i)
+        if (!board.hasAnyRooksConflicts()) {
+          return toggleToSolution(board.rows()[r + 1], (r + 1));
+        }
+        board.togglePiece(r,i);
+      }  
+    }
+    solution = board.rows(); 
+  };
 
-
-  var checkToggles = function(object) {
-    if (object.toggles.length === object.n) { 
-      if (object.board.hasAnyRooksConflicts() === false) {
-        solution = object.board.rows();
-      }
-    } else {
-      addToggle(object);
-    } 
-  }
-
-  var addToggle = function(object) {
-    var toggles = object.toggles;
-    var newX = toggles[toggles.length - 1][0] + 1;
-    var newY = toggles[toggles.length - 1][1] + 1;
-    
-    console.log(object);
-    console.log(solution);
-    object.board.togglePiece(newX, newY);
-    object.toggles.push([newX, newY]);
-  } 
-
-  while(solution === undefined) {
-    checkToggles(obj);
-  }
+  toggleToSolution(board.rows()[0], 0)
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
@@ -58,7 +42,42 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = undefined;
+
+  // var generateStartToggles = function(n) {
+  //   var toggles = [];
+
+  //   for (var i = 0; i < n; i++) {
+  //     for (var j = 0; j < n; j++) {
+  //       if (i !== j) {
+  //         var toggle = [i,j];
+  //         toggles.push(toggle);
+  //       }
+  //     }
+  //   }
+
+  //   return toggles;
+  // }
+
+  // var checkToggles = function(object) {
+  //   if (object.toggles.length === object.n) { 
+  //     if (object.board.hasAnyRooksConflicts() === false) {
+  //       solution = object.board.rows();
+  //     }
+  //   } else {
+  //     addToggle(object);
+  //   } 
+  // }
+
+  // var addToggle = function(object) {
+  //   var newObject
+  //   var toggles = object.toggles;
+  //   var newX = toggles[toggles.length - 1][0] + 1;
+  //   var newY = toggles[toggles.length - 1][1] + 1;
+    
+  //   object.board.togglePiece(newX, newY);
+  //   object.toggles.push([newX, newY]);
+  // } 
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
